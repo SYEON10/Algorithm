@@ -4,30 +4,30 @@
 
 using namespace std;
 
-vector<int> S(21, false);
+int s = 0;
 
-void Add(int x){
-    S[x] = true;
+void Add(const int& x){
+    s |= (1 << x);
 }
 
-void Remove(int x){
-    S[x] = false;
+void Remove(const int& x){
+    s &= ~(1 << x);
 }
 
-void Check(int x){
-    cout << S[x] << '\n';
+void Check(const int& x){
+    cout << (((s & (1 << x)) == 0) ? 0 : 1) << '\n';
 }
 
-void Toggle(int x){
-    S[x] = !S[x];
+void Toggle(const int& x){
+    s ^= (1 << x);
 }
 
 void All(){
-    S.assign(21, true);
+    s = (1 << 21) - 1;
 }
 
 void Empty(){
-    S.assign(21, false);
+    s = 0;
 }
 
 int main(){
