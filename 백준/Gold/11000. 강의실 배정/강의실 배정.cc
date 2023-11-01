@@ -1,20 +1,12 @@
+//
+// Created by syeon on 2023-11-01.
+//
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <algorithm>
 
 using namespace std;
-
-bool cmp(const pair<int, int> &p1, const pair<int, int> &p2){
-    if(p1.first != p2.first){
-        return p1.first < p2.first;
-    }
-    else return p1.second < p2.second;
-}
-
-bool cmp2(const pair<int, int> &p1, const pair<int, int> &p2){
-    return p1.second < p2.second;
-}
 
 int main()
 {
@@ -28,16 +20,11 @@ int main()
         cin >> lectures[i].first >> lectures[i].second;
     }
 
-    int minIndex = int(min_element(lectures.begin(), lectures.end(), cmp2) - lectures.begin());
+    sort(lectures.begin(), lectures.end());
+    
+    earlyEnd.push(-1);
 
-    earlyEnd.push(lectures[minIndex].second);
-
-    swap(lectures[minIndex], lectures.back());
-    lectures.pop_back();
-
-    sort(lectures.begin(), lectures.end(), cmp);
-
-    for(int i = 0; i < n - 1; i++){
+    for(int i = 0; i < n; i++){
         if(lectures[i].first >= earlyEnd.top()){
             earlyEnd.pop();
         }
