@@ -11,30 +11,20 @@ int main()
     cin >> wheelSize >> ratateNum;
 
     vector<char> wheel(wheelSize, '?');
+    vector<bool> isAvailable(26, false);
 
     for(int count = 0; count < ratateNum; count++){
         cin >> rotate >> letter;
         wheelPtr = (wheelPtr + rotate) % wheelSize;
-        if(wheel[wheelPtr] == '?' || wheel[wheelPtr] == letter){
-            wheel[wheelPtr] = letter;
-            for(int idx = wheelPtr - 1; idx >= 0; idx--){
-                if(wheel[idx] == letter){
-                    cout << '!';
-                    return 0;
-                }
-            }
-            for(int idx = wheelSize - 1; idx > wheelPtr; idx--){
-                if(wheel[idx] == letter){
-                    cout << '!';
-                    return 0;
-                }
-            }
+        if(wheel[wheelPtr] == letter){
+            continue;
         }
-        else {
+        if(wheel[wheelPtr] != '?' || isAvailable[letter - 'A']){
             cout << '!';
             return 0;
-
         }
+        wheel[wheelPtr] = letter;
+        isAvailable[letter - 'A'] = true;
     }
 
     for(int idx = wheelPtr; idx >= 0; idx--){
