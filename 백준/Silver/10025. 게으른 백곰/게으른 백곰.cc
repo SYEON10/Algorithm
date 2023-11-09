@@ -33,8 +33,7 @@ int main()
     maxWeight = curWeight;
 
     for(int i = minPos + 1; i + reach < maxPos; i++){
-        curWeight -= pos[i - 1];
-        curWeight += pos[(i + reach)];
+        curWeight += pos[(i + reach)] - pos[i - 1];
         maxWeight = max(curWeight, maxWeight);
     }
 
