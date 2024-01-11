@@ -12,6 +12,50 @@
 
 ### 학습
 
+✨ Strict Weak Ordering
+이번 문제에서 Strict Weak Ordering 을 만족하지 않는 cmp 함수를 만들어서 꽤 애를 먹었다...
+
+작성한 cmp 코드는 다음과 같다.
+
+```
+bool cmp(const vector<int> &a, const vector<int> &b){
+    if(a[3] == 1)
+        return true;
+    if(b[3] == 1)
+        return false;
+
+    return true;
+}
+```
+
+위 cmp 함수는 비반사성과 비대칭성을 만족하지 않는다.
+뭘 믿고 이런 코드를 썼는지... 😂
+
+올바르게 코드를 쓰면 다음과 같다.
+
+```
+bool cmp(const vector<int> &a, const vector<int> &b){
+    if(a[3] == 1 && b[3] != 1){
+        return true;
+    }
+    if(a[3] != 1 && b[3] == 1){
+        return false;
+    }
+
+    return a > b;
+}
+```
+cmp 함수를 쓸 때 주의할 점
+1. true 면 첫번째 인자가, false면 두번째 인자가 왼쪽으로 간다. (= 우선순위가 높아진다. )
+2. Strict Weak Ordering 을 만족하게 작성하자.
+
+- 비반사성(irreflexivity): 모든 x에 대해 R(x, x)는 거짓
+- 비대칭성(asymmetry): 모든 x, y에 대해 R(x, y)가 참이면 R(y, x)는 거짓
+- 추이성(transitivity): 모든 x, y, z에 대해 R(x, y)와 R(y, z)가 참이면 R(x, z)는 참
+- 비비교성의 추이성(transitivity of incomparability): 모든 x, y, z에 대해 R(x, y)와 R(y, x)가 거짓이고 R(y, z)와 R(z, y)가 거짓이면 R(x, z)와 R(z, x)는 거짓
+
+이외에는...
+
 보기에 좀 더럽게 구현이 되어있는데, 함수로 나누든 if for문 등으로 들어가는 깊이를 낮추든 해서 깔끔하게 바꿀 수 있을 것 같다.
 
 그리고 뭐든 더 좋은 방법(메모리, 시간, 등... )이 있지 않을까? 이렇게 부산스럽게 구현해야 하나?
