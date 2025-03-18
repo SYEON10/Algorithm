@@ -4,12 +4,12 @@
 
 using namespace std;
 
-int CountRouter(const vector<int> &pos, int distance){ //위치, 거리
+int max_count(vector<int> &house, int distance) {
     int count = 1;
-    int beforeRouter = pos[0];
-    for(int i = 1; i < pos.size(); i++){
-        if(pos[i] - beforeRouter >= distance){
-            beforeRouter = pos[i];
+    int before_house = 0;
+    for(int i = 1; i < house.size(); i++) {
+        if(house[i] - house[before_house] >= distance) {
+            before_house = i;
             count++;
         }
     }
@@ -17,28 +17,28 @@ int CountRouter(const vector<int> &pos, int distance){ //위치, 거리
     return count;
 }
 
-int main()
-{
+int main() {
+
     int n, c;
+
     cin >> n >> c;
 
-    vector<int> housePos(n);
-    for(auto &pos : housePos){
-        cin >> pos;
+    vector<int> house(n);
+
+    for (int i = 0; i < n; i++) {
+        cin >> house[i];
     }
 
-    sort(housePos.begin(), housePos.end());
+    sort(house.begin(), house.end());
 
     int left = 1;
-    int right = housePos.back() - housePos.front();
-    int mid;
+    int right = house.back() - house.front();
 
-    while(left <= right){
-        mid = (right + left) / 2;
+    while(left <= right) {
+        int mid = (left + right) / 2;
+        int count = max_count(house, mid);
 
-        int count = CountRouter(housePos, mid);
-
-        if(count >= c){
+        if(count >= c) {
             left = mid + 1;
         }
         else{
@@ -48,5 +48,4 @@ int main()
 
     cout << left - 1;
 
-    return 0;
 }
