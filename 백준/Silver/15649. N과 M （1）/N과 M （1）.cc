@@ -1,36 +1,45 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
-const int SIZE = 8;
 
+vector<int> table;
+vector<bool> check;
 int n, m;
-vector<int> num(SIZE);
-vector<bool> check(SIZE);
 
-void backtracking(int cnt) {
-	if (cnt == m) {
-		for (int i = 0; i < cnt; i++) {
-			cout << num[i] << ' ';
-		}
-		cout << '\n';
-		return;
-	}
-	for (int i = 1; i <= n; i++) {
-		if (!check[i]) {
-			num[cnt] = i;
-			check[i] = true;
-			backtracking(cnt + 1);
-			check[i] = false;
-		}
-	}
+void print(){
+    for(int i = 1; i <=m ; i++){
+        cout << table[i] << ' ';
+    }
+    cout << '\n';
 }
 
-int main() {
+void BackTracking(int index){
+    if(index == m){
+        print();
+        return;
+    }
 
-	cin >> n >> m;
+    for(int num = 1; num <= n; num++){
+        if(table[index] == num || check[num]){
+            continue;
+        }
+        table[index + 1] = num;
+        check[num] = true;
+        BackTracking(index + 1);
+        check[num] = false;
+    }
+}
 
-	backtracking(0);
+int main()
+{
+    cin >> n >> m;
 
-	return 0;
+    table.assign(m + 1, 0);
+    check.assign(m + 1, false);
+
+    BackTracking(0);
+
+    return 0;
 }
