@@ -16,7 +16,6 @@ struct edge{
 bool BellmanFord(const vector<edge>& adj_list, const int n){
 
         vector<int> distance(n + 1, INF);
-        distance[1] = 0;
         for(int i = 0; i < n; i++){
             for(int j = 0; j < adj_list.size(); j++){
                 int start = adj_list[j].start;
