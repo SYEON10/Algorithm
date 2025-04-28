@@ -9,10 +9,6 @@ vector<vector<int>> tree;
 vector<int> cnt;
 
 int DFS(int node, int parent){
-    if(cnt[node] != 0){
-        return cnt[node];
-    }
-
     for(int i = 0; i < tree[node].size(); i++){
         if(tree[node][i] == parent) continue;
         cnt[node] += DFS(tree[node][i], node);
