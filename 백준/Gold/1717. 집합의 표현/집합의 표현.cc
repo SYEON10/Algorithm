@@ -4,17 +4,12 @@
 
 using namespace std;
 
-int FindRoot(int a, const vector<int>& UF){
-    int a_root = a;
-
-    while(UF[a_root] > -1){
-        a_root = UF[a_root];
-    }
-
-    return a_root;
+int FindRoot(int a, vector<int>& UF){
+    if(UF[a] < 0) return a;
+    return UF[a] = FindRoot(UF[a], UF);
 }
 
-string Find(int a, int b, const vector<int>& UF){
+string Find(int a, int b, vector<int>& UF){
     int a_root = FindRoot(a, UF);
     int b_root = FindRoot(b, UF);
 
