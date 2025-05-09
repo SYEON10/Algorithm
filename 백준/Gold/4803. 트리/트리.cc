@@ -1,83 +1,79 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <stack>
 
 using namespace std;
 
-//부모 외 visited 된 node에 방문하게 되면 트리가 아님
+int FindRoot(int a, const vector<int>& UF){
+    int a_root = a;
 
-struct node{
-    int value;
-    int parent;
-};
-
-bool DFS(const vector<vector<int>>& adj_list, vector<bool>& visited, int v){
-    stack<node> dfs;
-    dfs.push({v, 0});
-
-    int isTree = true;
-
-    while(!dfs.empty()){
-        int node = dfs.top().value;
-        int parent = dfs.top().parent;
-        dfs.pop();
-
-        visited[node] = true;
-
-        for(int i = 0; i < adj_list[node].size(); i++){
-            if(adj_list[node][i] == parent) continue;
-            if(visited[adj_list[node][i]]){
-                isTree = false;
-            }
-            else dfs.push({adj_list[node][i], node});
-        }
+    while(UF[a_root] > -1){
+        a_root = UF[a_root];
     }
 
-    return isTree;
+    return a_root;
+}
+
+void Union(int a, int b, vector<int>& UF, vector<bool>& cycle){
+    int a_root = FindRoot(a, UF);
+    int b_root = FindRoot(b, UF);
+
+    if(a_root == b_root) {
+        cycle[a_root] = true;
+        return;
+    }
+
+    if(cycle[a_root] || cycle[b_root]){
+        cycle[a_root] = true;
+        cycle[b_root] = true;
+        return;
+    }
+
+    if(abs(UF[a_root]) > abs(UF[b_root])){
+        UF[a_root] += UF[b_root];
+        UF[b_root] = a_root;
+    }
+    else{
+        UF[b_root] += UF[a_root];
+        UF[a_root] = b_root;
+    }
 }
 
 int main()
 {
-    int case_num = 1;
+    cin.tie(0) -> sync_with_stdio(0);
+    int i = 1;
+
     while(true){
-        int n, m;
-        cin >> n >> m;
 
-        if(n == 0 && m == 0) break;
+        int v, e;
+        cin >> v >> e;
 
-        vector<vector<int>> adj_list(n + 1);
-        vector<bool> visited(n + 1, false);
+        if(v == 0 && e == 0) break;
 
-        for(int i = 0; i < m; i++){
-            int from, to;
-            cin >> from >> to;
-            adj_list[from].emplace_back(to);
-            adj_list[to].emplace_back(from);
+        vector<int> UF(v + 1, -1);
+        vector<bool> cycle(v + 1, false);
+
+        for(int i = 0; i < e; i++){
+            int a, b;
+            cin >> a >> b;
+
+            Union(a, b, UF, cycle);
         }
 
         int count = 0;
-        
-        for(int v = 1; v <= n; v++){
-            if(visited[v]) continue;
-            if(DFS(adj_list, visited, v)) count++;
+
+        for(int i = 1; i <= v; i++){
+            if(UF[i] < 0 && !cycle[i]) count++;
         }
 
-        cout << "Case " << case_num << ": ";
+        cout << "Case " << i << ": ";
 
-        switch(count){
-            case 0:
-                cout << "No trees.\n";
-                break;
-            case 1:
-                cout << "There is one tree.\n";
-                break;
-            default:
-                cout << "A forest of " << count << " trees.\n";
-                break;
-        }
+        if(count == 0) cout << "No trees.\n";
+        else if(count == 1) cout << "There is one tree.\n";
+        else cout << "A forest of " << count << " trees.\n";
 
-        case_num++;
+        i++;
     }
 
     return 0;
