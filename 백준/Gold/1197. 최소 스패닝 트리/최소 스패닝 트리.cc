@@ -47,10 +47,12 @@ int main()
     }
 
     int count = 0;
+    int required = 0;
 
     for(const auto& node : weight){
         if(Union(node.second.first, node.second.second, UF)){
             count += node.first;
+            if(++required == v - 1) break;
         }
     }
 
