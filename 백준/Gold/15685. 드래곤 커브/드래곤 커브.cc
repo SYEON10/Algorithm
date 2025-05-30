@@ -5,14 +5,12 @@
 using namespace std;
 
 const int END = 100;
-const int MAX_GEN = 10;
 
 struct point {
     int x;
     int y;
 };
 
-vector<vector<bool>> board;
 
 point getNextPoint(point c, int d) {
     switch (d) {
@@ -32,7 +30,7 @@ int rotate(int direction) {
     return (direction + 1) % 4;
 }
 
-void dragonCurve(point data, int direction, int generation) {
+void dragonCurve(point data, int direction, int generation, vector<vector<bool>>& board) {
     vector<int> route = { direction };
 
     board[data.x][data.y] = true;
@@ -40,8 +38,8 @@ void dragonCurve(point data, int direction, int generation) {
     board[data.x][data.y] = true;
 
     for (int i = 1; i <= generation; i++) {
-        int current_route = route.size();
-        for (int j = current_route - 1; j >= 0; j--) {
+        int size = route.size();
+        for (int j = size - 1; j >= 0; j--) {
             int d = rotate(route[j]);
             route.push_back(d);
             data = getNextPoint(data, d);
@@ -55,12 +53,12 @@ int main()
     int n;
     cin >> n;
 
-    board.assign(END + 1, vector<bool>(END + 1, false));
+    vector<vector<bool>> board(END + 1, vector<bool>(END + 1, false));
 
     for (int i = 0; i < n; i++) {
         int x, y, d, g;
         cin >> x >> y >> d >> g;
-        dragonCurve(point{ x, y }, d, g);
+        dragonCurve(point{ x, y }, d, g, board);
     }
 
     int count = 0;
