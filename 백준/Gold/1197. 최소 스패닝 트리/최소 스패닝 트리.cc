@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <map>
 #include <algorithm>
 
 using namespace std;
@@ -30,6 +29,13 @@ bool Union(const int a, const int b, vector<int>& UF){
     return true;
 }
 
+struct node{
+    int w, a, b;
+    bool operator<(const node& other) const{
+        return w < other.w;
+    }
+};
+
 int main()
 {
     cin.tie(0) -> sync_with_stdio(0);
@@ -37,21 +43,23 @@ int main()
     cin >> v >> e;
 
     vector<int> UF(v + 1, -1);
-    multimap<int, pair<int, int>> weight;
+    vector<node> weight;
 
     for(int i = 0; i < e; i++){
         int a, b, w;
         cin >> a >> b >> w;
         
-        weight.insert({w, {a, b}});
+        weight.push_back({w, a, b});
     }
+
+    sort(weight.begin(), weight.end());
 
     int count = 0;
     int required = 0;
 
     for(const auto& node : weight){
-        if(Union(node.second.first, node.second.second, UF)){
-            count += node.first;
+        if(Union(node.a, node.b, UF)){
+            count += node.w;
             if(++required == v - 1) break;
         }
     }
