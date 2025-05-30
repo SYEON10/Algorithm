@@ -20,15 +20,14 @@ float Distance(const Point& a, const Point& b){
 
 float Prim(const int n, const vector<Point>& points){
     vector<float> distance(n, INF);
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    priority_queue<pair<float, int>, vector<pair<float, int>>, greater<>> pq;
 
-    vector<vector<bool>> visited(n, vector<bool>(n, false));
-
-    //이전에 같은 노드로 방문했다면 다시 방문할 필요가 없음
-    //그리고... weight가 낮은? 게 필요한가? 어차피 가중치 저장이 필요없는데?
+    vector<bool> visited(n);
 
     pq.push({0, 0});
     distance[0] = 0;
+
+    float sum = 0;
 
     while(!pq.empty()){
         float weight = pq.top().first;
@@ -36,25 +35,19 @@ float Prim(const int n, const vector<Point>& points){
         Point node = points[index];
         pq.pop();
 
-        if(distance[index] < weight) continue;
+        if(visited[index]) continue;
+        visited[index] = true;
+        sum += weight;
 
         for(int i = 0; i < points.size(); i++){
-            if(i == index) continue;
-            if(!visited[index][i] && distance[i] > Distance(node, points[i])){
+            if(!visited[i] && distance[i] > Distance(node, points[i])){
                 distance[i] = Distance(node, points[i]);
                 pq.push({distance[i], i});
-                visited[index][i] = true;
-                visited[i][index] = true;
             }
         }
     }
 
-    float count = 0;
-    for(float d : distance){
-        count += d;
-    }
-
-    return count;
+    return sum;
 }
 
 int main()
