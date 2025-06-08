@@ -5,7 +5,7 @@ object Solution {
         
         photo.map{
             case p => p.map{
-                case person => score.get(person).getOrElse(0)
+                case person => score.getOrElse(person, 0)
             }.sum
         }
     }
