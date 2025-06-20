@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 
 using namespace std;
@@ -45,7 +45,7 @@ int main()
     vector<node> nodes(m);
     vector<int> UF(n + 1, -1);
 
-    map<int, bool> roots;
+    unordered_map<int, bool> roots;
 
     for(int i = 0; i < k; i++){
         int x;
