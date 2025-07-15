@@ -17,20 +17,17 @@ int main() {
         cin >> nums[i];
     }
 
-    int left = 0, right = 0;
-    int before_left = -1, before_right = -1;
+    int left = 0, right = 0; //1개만으로도 s를 넘길 수 있음
     int ans = INT32_MAX;
     sum = nums[left];
 
-    while (!(before_left == left && before_right == right)) {
-        before_left = left;
-        before_right = right;
+    while (true) {
         if (sum >= s) {
             ans = min(ans, right - left + 1);
             sum -= nums[left++];
-            continue;
-        }
-        if (right < n - 1) {
+        } else if (right == n - 1) {
+            break;
+        } else {
             sum += nums[++right];
         }
     }
