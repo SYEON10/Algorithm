@@ -7,32 +7,35 @@ using namespace std;
 
 const int SIZE = 1e5 + 1;
 
+int parent[SIZE];
+
+int Find(int x){
+    if(parent[x] == x) return x;
+    return parent[x] = Find(parent[x]);
+}
+
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
 
     int g, p;
     cin >> g >> p;
 
-    set<int> s;
-    vector<int> gi(p);
-
-    for(int i = 1; i <= g; i++){
-        s.insert(i);
+    for(int i = 0; i <= g; i++){
+        parent[i] = i;
     }
 
     int count = 0;
 
     for(int i = 0; i < p; i++){
-        cin >> gi[i];
-    }
+        int gi;
+        cin >> gi;
 
-    for(int i : gi){
-        auto it = s.upper_bound(i);
-        if(it == s.begin()){
-            break;
-        }
-        s.erase(--it);
+        int dock = Find(gi);
+
+        if(dock == 0) break;
+
         count++;
+        parent[dock] = Find(dock - 1);
     }
 
     cout << count;
