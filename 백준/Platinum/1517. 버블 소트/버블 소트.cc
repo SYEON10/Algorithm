@@ -10,9 +10,11 @@ using namespace std;
 //알고리즘 최대 시간복잡도 O(nlogn)
 //스왑 수 = 역순 수
 //특정 구간 내 숫자가 앞에 나온 수
+//주의사항 1 : 음수 값 또한 입력으로 들어올 수 있음
+//주의사항 2 : result는 int 범위를 넘어설 수 있음
 
-const int SIZE = 5000000;
-vector<int> segtree(2 * SIZE, 0);
+const int SIZE = 500000;
+vector<int> segtree(4 * SIZE, 0); //segment tree 최대 크기
 
 int Query(int left, int right, int index, int start, int end){
     if(right < start || left > end) return 0;
