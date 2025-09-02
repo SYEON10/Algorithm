@@ -1,38 +1,42 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <algorithm>
 
 using namespace std;
 
-int main()
-{
+int main() {
+    cin.tie(0) -> sync_with_stdio(0);
+
     int n;
     cin >> n;
 
-    vector<int> table(3, 0);
-    //DP[i] = 해당 줄에서의 최대/최소 점수
-    vector<vector<int>> max_DP(2, vector<int>(3, 0));
-    vector<vector<int>> min_DP(2, vector<int>(3, 0));
-    
-    //DP[i][j] = max(DP[i - 1] + table[j], )
-    for(int r = 1; r <= n; r++){
-        for(int c = 0; c < 3; c++){
-            cin >> table[c];
-        }
-        max_DP[1][0] = max(max_DP[0][0], max_DP[0][1]) + table[0];
-        max_DP[1][1] = max(max_DP[0][0], max(max_DP[0][1], max_DP[0][2])) + table[1];
-        max_DP[1][2] = max(max_DP[0][1], max_DP[0][2]) + table[2];
+    int maxDP[3] = {0, 0, 0};
+    int minDP[3] = {0, 0, 0};
 
-        min_DP[1][0] = min(min_DP[0][0], min_DP[0][1]) + table[0];
-        min_DP[1][1] = min(min_DP[0][0], min(min_DP[0][1], min_DP[0][2])) + table[1];
-        min_DP[1][2] = min(min_DP[0][1], min_DP[0][2]) + table[2];
+    for(int i = 0; i < n; i++){
+        int a, b, c;
+        cin >> a >> b >> c;
 
-        max_DP[0] = max_DP[1];
-        min_DP[0] = min_DP[1];
+        int tempA = max(maxDP[0], maxDP[1]) + a;
+        int tempB = max(max(maxDP[0], maxDP[1]), maxDP[2]) + b;
+        int tempC = max(maxDP[1], maxDP[2]) + c;
+
+        maxDP[0] = tempA;
+        maxDP[1] = tempB;
+        maxDP[2] = tempC;
+
+        tempA = min(minDP[0], minDP[1]) + a;
+        tempB = min(min(minDP[0], minDP[1]), minDP[2]) + b;
+        tempC = min(minDP[1], minDP[2]) + c;
+
+        minDP[0] = tempA;
+        minDP[1] = tempB;
+        minDP[2] = tempC;
     }
 
-    cout << max(max_DP[0][0], max(max_DP[0][1], max_DP[0][2])) << ' ';
-    cout << min(min_DP[0][0], min(min_DP[0][1], min_DP[0][2]));
-
+    cout << max(max(maxDP[0], maxDP[1]), maxDP[2]) << ' ';
+    cout << min(min(minDP[0], minDP[1]), minDP[2]);
+    
     return 0;
 }
