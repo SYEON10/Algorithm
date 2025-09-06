@@ -1,72 +1,67 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <cmath>
 #include <algorithm>
 
 using namespace std;
 
-int TopologySort(int n, int w, const vector<int>& cost, vector<int>& parents, const vector<vector<int>>& adj_list){
-
-    vector<bool> visited(n + 1, false);
-    vector<int> DP(n + 1, 0);
-
-    int count = 0;
-
-    visited[0] = true;
-
-    for(int p = 1; p <= n; p++){
-        if(parents[p] == 0) {
-            DP[p] = cost[p];
-        }
-    }
-
-    while(count < n){
-        for(int p = 1; p <= n; p++){
-            if(parents[p] > 0) continue;
-            if(visited[p]) continue;
-            visited[p] = true;
-            count++;
-            if(p == w) return DP[w];
-            for(int i : adj_list[p]){
-                parents[i]--;
-                DP[i] = max(DP[i], DP[p] + cost[i]);
-            }
-        }
-    }
-
-    return DP[w];
-}
-
+//9시 15분까지
 int main() {
-
     cin.tie(0) -> sync_with_stdio(0);
 
     int t;
     cin >> t;
 
     while(t--){
-        int n, k, w;
+        int n, k;
         cin >> n >> k;
 
-        vector<int> cost(n + 1, 0);
+        vector<int> costs(n + 1);
         for(int i = 1; i <= n; i++){
-            cin >> cost[i];
+            cin >> costs[i];
         }
 
-        vector<int> parents(n + 1, 0);
         vector<vector<int>> adj_list(n + 1, vector<int>());
+        vector<int> parents(n + 1, 0);
+        vector<int> time_checker(n + 1, 0);
 
         for(int i = 0; i < k; i++){
             int from, to;
             cin >> from >> to;
-
             adj_list[from].push_back(to);
             parents[to]++;
         }
 
-        cin >> w;
+        int target;
+        cin >> target;
 
-        cout << TopologySort(n, w, cost, parents, adj_list) << '\n';
+        queue<int> q;
+
+        for(int i = 1; i <= n; i++){
+            if(parents[i] == 0) {
+                time_checker[i] = costs[i];
+                q.push(i);
+            }
+        }
+
+        while(!q.empty()){
+            auto node = q.front(); q.pop();
+            int num = node;
+            int timer = time_checker[num];
+
+            for(int next : adj_list[num]){
+                parents[next]--;
+
+                time_checker[next] = max(time_checker[next], timer + costs[next]);
+
+                if(parents[next] == 0){
+                    q.push(next);
+                }
+            }
+        }
+
+        cout << time_checker[target] << '\n';
     }
 
     return 0;
