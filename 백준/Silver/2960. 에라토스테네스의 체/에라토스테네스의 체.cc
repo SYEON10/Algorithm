@@ -1,40 +1,39 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <algorithm>
 
 using namespace std;
 
-int main(){
+int main() {
+    cin.tie(0) -> sync_with_stdio(0);
 
     int n, k;
-
     cin >> n >> k;
 
-    //1단계
-    vector<bool> nums(n + 1, true);
+    bool arr[n + 1] = {};
 
-    nums[0] = false;
-    nums[1] = false;
+    arr[0] = arr[1] = true;
 
+    int p = 2;
+    int count = 0;
     while(true){
-        int p = 0;
-        //2단계
-        for(int i = 2; i <= n; i++){
-            if(nums[i]){
-                p = i;
-                break;
-            }
-        }
-        //3단계
-        for(int j = 1; p * j <= n; j++){
-            if(nums[p * j]){
-                nums[p * j] = false;
-                k--;
-            }
-            if(k == 0){
-                cout << p * j;
+            for(int i = 1; i <= n / p; i++){
+        if(!arr[p * i]){
+            arr[p * i] = true;
+            count++;
+            if(count == k){
+                cout << p * i;
                 return 0;
             }
         }
+    }
+    for(int i = 1; i <= n; i++){
+        if(arr[i] == false){
+            p = i;
+            break;
+        }
+    }
     }
 
     return 0;
