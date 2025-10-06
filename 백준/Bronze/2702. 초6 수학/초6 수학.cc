@@ -5,6 +5,13 @@
 
 using namespace std;
 
+//BOJ 2702
+
+int GCD(int a, int b){
+    if(b == 0) return a;
+    return GCD(b, a % b);
+}
+
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
 
@@ -15,13 +22,8 @@ int main() {
         int a, b;
         cin >> a >> b;
 
-        int gcd = 1;
-        for(int i = 1; i <= 1000; i++){
-            if(a % i == 0 && b % i == 0){
-                gcd = i;
-            }
-        }
-
+        if(a < b) swap(a, b);
+        int gcd = GCD(a, b);
         int lcm = (a * b) / gcd;
         cout << lcm << ' ' << gcd << '\n';
     }
