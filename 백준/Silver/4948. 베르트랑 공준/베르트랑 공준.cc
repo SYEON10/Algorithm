@@ -5,33 +5,31 @@
 
 using namespace std;
 
-const int MAX = 500000;
+const int MAX = 123456 * 2;
 
 int main() {
     cin.tie(0) -> sync_with_stdio(0);
 
     vector<int> primes;
-    bool nums[MAX + 1];
+    vector<bool> nums(MAX + 1, false);
 
-    for(int i = 2; i <= MAX; i++){
+    for(int i = 2; i * i <= MAX; i++){
         if(!nums[i]){
-            primes.push_back(i);
-            for(int j = 2; j <= ceil(MAX / i); j++){
-                nums[j * i] = true;
+            for(int j = i * i; j <= MAX; j += i){
+                nums[j] = true;
             }
         }
     }
 
+    for(int i = 2; i <= MAX; i++){
+        if(!nums[i]){
+            primes.push_back(i);
+        }
+    }
+
     int input;
-    while(true){
-        cin >> input;
-        if(input == 0) break;
-
-        vector<int>::iterator last = lower_bound(primes.begin(), primes.end(), input * 2);
-        
-        int count = last - upper_bound(primes.begin(), primes.end(), input);
-
-        if(*last == input * 2) count++;
+    while(cin >> input && input != 0){
+        int count = upper_bound(primes.begin(), primes.end(), input * 2) - upper_bound(primes.begin(), primes.end(), input);
         cout << count << '\n';
     }
 
