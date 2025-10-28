@@ -8,9 +8,6 @@ using namespace std;
 typedef long long ll;
 const int MOD = 1e9 + 7;
 
-//조합론
-//거듭제곱을 이용한 분할정복
-
 ll modpow(ll base, ll exp) {
     ll res = 1;
     while (exp > 0) {
@@ -28,6 +25,9 @@ int main() {
     cin >> n >> m;
 
     long long result = 0;
+
+    n %= MOD - 1;
+    m %= MOD - 1;
 
     result = ((modpow(2, n) + modpow(2, m)) - 2) % MOD;
 
