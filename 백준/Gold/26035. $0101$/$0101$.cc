@@ -27,8 +27,6 @@ int main() {
     long long n, m;
     cin >> n >> m;
 
-    if(m > n) swap(m, n);
-
     long long result = 0;
 
     result = ((modpow(2, n) + modpow(2, m)) - 2) % MOD;
