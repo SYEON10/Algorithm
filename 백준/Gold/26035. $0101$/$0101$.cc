@@ -31,10 +31,7 @@ int main() {
 
     long long result = 0;
 
-    n %= MOD - 1;
-    m %= MOD - 1;
-
-    result = ((modpow(2, n) + modpow(2, m)) % MOD + MOD - 2) % MOD;
+    result = ((modpow(2, n) + modpow(2, m)) - 2) % MOD;
 
     cout << result;
 
