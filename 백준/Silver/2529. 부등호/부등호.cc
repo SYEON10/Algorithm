@@ -35,13 +35,8 @@ void BackTracking(int index){
         }
         else{
             if(visited[num]) continue;
-            if(bigger[index - 1] && word[index - 1] < num){
-                visited[num] = true;
-                word[index] = num;
-                BackTracking(index + 1);
-                visited[num] = false;
-            }
-            else if(!bigger[index - 1] && word[index - 1] > num){
+            if(bigger[index - 1] && word[index - 1] < num 
+                || !bigger[index - 1] && word[index - 1] > num){
                 visited[num] = true;
                 word[index] = num;
                 BackTracking(index + 1);
