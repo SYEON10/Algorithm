@@ -1,51 +1,48 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
-vector<int> table;
-vector<bool> vertical;
-vector<bool> left_diagonal;
-vector<bool> right_diagonal;
+int count = 0;
+int SIZE;
+const int MAX_SIZE = 20;
 
-int n, cnt;
+bool row[MAX_SIZE];
+bool col[MAX_SIZE];
+bool right_diagnol[MAX_SIZE]; //왼쪽 대각선 => r + c
+bool left_diagnol[MAX_SIZE]; //오른쪽 대각선 => size - c + r - 1
 
-void BackTracking(int row){
-    if(row == n + 1){
-        cnt++;
+void Back(int r){
+    if(r == SIZE){
+        ::count++;
         return;
     }
 
-    for(int col = 1; col <= n; col++){
-        if(vertical[col] || left_diagonal[row + col - 1] || right_diagonal[n - col + row - 1]){
-            continue;
-        }
-
-        vertical[col] = true;
-        left_diagonal[row + col - 1] = true;
-        right_diagonal[n - col + row - 1] = true;
-
-        BackTracking(row + 1);
-        
-        vertical[col] = false;
-        left_diagonal[row + col - 1] = false;
-        right_diagonal[n - col + row - 1] = false;
+    for(int c = 0; c < SIZE; c++){
+        if(row[r] || col[c] || right_diagnol[r + c] || left_diagnol[SIZE - c + r - 1]) continue;
+        row[r] = true;
+        col[c] = true;
+        right_diagnol[r + c] = true;
+        left_diagnol[SIZE - c + r - 1] = true;
+        Back(r + 1);
+        row[r] = false;
+        col[c] = false;
+        right_diagnol[r + c] = false;
+        left_diagnol[SIZE - c + r - 1] = false;
     }
 }
 
-int main()
-{
-    cin >> n;
-    cnt = 0;
+int main() {
+    cin.tie(0) -> sync_with_stdio(0);
 
-    vertical.assign(n + 1, false);
-    left_diagonal.assign(2 * n, false);
-    right_diagonal.assign(2 * n, false);
+    cin >> ::SIZE;
 
-    BackTracking(1);
+    Back(0);
 
-    cout << cnt;
+    cout << ::count;
 
     return 0;
 }
