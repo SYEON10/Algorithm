@@ -1,31 +1,36 @@
-//
-// Created by syeon on 2023-10-23.
-//
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
-int main() {
+struct item {
+    int weight;
+    int value;
+};
 
+int main()
+{
     int n, k;
     cin >> n >> k;
 
-    vector<pair<int, int>> products(n + 1, {0, 0});
-    vector<int> DP2(k+1);
+    vector<item> items(n);
 
-    for(int i = 1; i <= n; i++){
-        cin >> products[i].first >> products[i].second;
+    //i = 무게 value = 가치합
+    vector<int> DP(k + 1, 0);
+
+    for(int i = 0; i < n; i++){
+        cin >> items[i].weight >> items[i].value;
     }
 
-    for(int i = 1; i <= n; i++){ //물건 넣기
-        for(int j = k; j >= products[i]. first; j--){
-            DP2[j] = max(DP2[j], products[i].second + DP2[j - products[i].first]);
+    for(int i = 0; i < n; i++){
+        item item = items[i];
+        for(int j = k; j >= item.weight; j--){
+            DP[j] = max(DP[j], item.value + DP[j - item.weight]);
         }
     }
 
-    cout << DP2[k];
+    cout << DP[k];
 
     return 0;
 }
