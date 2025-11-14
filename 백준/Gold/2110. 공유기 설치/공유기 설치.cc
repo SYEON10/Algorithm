@@ -1,16 +1,21 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
-int max_count(vector<int> &house, int distance) {
+//설치된 공유기 최대 개수 반환
+vector<int> houses;
+
+int Simulate(int dist){
     int count = 1;
-    int before_house = 0;
-    for(int i = 1; i < house.size(); i++) {
-        if(house[i] - house[before_house] >= distance) {
-            before_house = i;
+    int prev = houses[0];
+    for(int i = 1; i < houses.size(); i++){
+        if(houses[i] - prev >= dist){
             count++;
+            prev = houses[i];
         }
     }
 
@@ -18,34 +23,34 @@ int max_count(vector<int> &house, int distance) {
 }
 
 int main() {
+    cin.tie(0) -> sync_with_stdio(0);
 
     int n, c;
-
     cin >> n >> c;
 
-    vector<int> house(n);
+    houses.assign(n, 0);
 
-    for (int i = 0; i < n; i++) {
-        cin >> house[i];
+    for(int i = 0; i < n; i++){
+        cin >> houses[i];
     }
 
-    sort(house.begin(), house.end());
+    sort(houses.begin(), houses.end());
 
     int left = 1;
-    int right = house.back() - house.front();
+    int right = houses[n - 1] - houses[0] + 1;
 
-    while(left <= right) {
+    while(left < right){
         int mid = (left + right) / 2;
-        int count = max_count(house, mid);
 
-        if(count >= c) {
+        if(Simulate(mid) >= c){
             left = mid + 1;
         }
         else{
-            right = mid - 1;
+            right = mid;
         }
     }
 
-    cout << left - 1;
+    cout << right - 1;
 
+    return 0;
 }
